@@ -1,0 +1,54 @@
+{% extends 'website/auth_base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- HERO BANNER ARTIKEL -->
+<section class="articles-hero">
+  <div class="hero-container">
+    <span class="hero-category">SOCIALYZE / INSIGHTS & STORIES</span>
+    <h1>Ideas worth sharing.</h1>
+    <p>Temukan informasi, inspirasi, dan insight seputar branding, kreativitas, serta perkembangan dunia digital.</p>
+  </div>
+</section>
+
+<!-- DAFTAR ARTIKEL -->
+<main class="main-content">
+  <div class="section-header">
+    <h2 class="section-title">Latest Articles</h2>
+    <span class="article-count">{{ articles.count|default:"1" }} ARTICLES</span>
+  </div>
+
+  <div class="articles-grid">
+    {% for article in articles %}
+      <a href="#" class="article-card">
+        {% if article.image %}
+          <img src="{{ article.image.url }}" alt="{{ article.title }}" class="article-image">
+        {% else %}
+          <img src="{% static 'website/images/porto-1.jpg' %}" alt="Default Image" class="article-image">
+        {% endif %}
+        <div class="article-body">
+          <h3 class="article-card-title">{{ article.title }}</h3>
+          <p class="article-card-excerpt">{{ article.content|truncatewords:20 }}</p>
+          <div class="article-card-meta">
+            <span>{{ article.created_at|date:"d M Y" }}</span>
+            <span>By {{ article.author|default:"Admin" }}</span>
+          </div>
+        </div>
+      </a>
+    {% empty %}
+      <!-- Kartu Cadangan Jika Belum Ada Data -->
+      <div class="article-card">
+        <img src="{% static 'website/images/porto-1.jpg' %}" alt="Sample Article" class="article-image">
+        <div class="article-body">
+          <h3 class="article-card-title">Membangun Identity Brand di Era Digital</h3>
+          <p class="article-card-excerpt">Panduan lengkap mengenai strategi visual dan pendekatan konten untuk meningkatkan citra brand Anda.</p>
+          <div class="article-card-meta">
+            <span>08 Nov 2026</span>
+            <span>By Socialyze Team</span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}

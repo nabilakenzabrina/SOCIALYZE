@@ -1,0 +1,325 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Socialyze Creative Agency — branding, social media management, dan content creation.">
+  <title>SOCIALYZE — Creative Agency</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'website/style.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Socialyze beranda">
+      <img src="{% static 'website/images/logo.png' %}" alt="SOCIALYZE Creative Agency">
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Buka menu" aria-expanded="false">☰</button>
+    
+<nav class="nav" id="mainNav">
+    <a href="#services">Layanan</a>
+    <a href="#portfolio">Portofolio</a>
+    <a href="#packages">Paket</a>
+    <a href="#faq">FAQ</a>
+    <a href="#about">Tentang</a>
+    <a href="{% url 'home' %}#latest-articles">Artikel</a>
+    <a href="{% url 'user_login' %}">Login</a>
+    <a href="{% url 'register' %}">Daftar</a>
+    <a class="nav-cta" href="#packages">Pesan Layanan ↗</a>
+</nav>
+
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span class="dot"></span> STRATEGY · DESIGN · SOCIAL</p>
+        <h1>Make your brand<br><em>impossible</em> to ignore.</h1>
+        <p class="hero-desc"> Kami mendampingi UMKM tampil percaya diri dengan strategi kreatif, visual kuat, dan konten berdampak.</p>
+        <div class="hero-actions"><a class="button button-lime" href="#packages">Lihat Paket Kami <span>↗</span></a><a class="text-link" href="#portfolio">Jelajahi karya <span>↓</span></a></div>
+        <div class="hero-note"><span>✳</span><p>BUILT FOR BOLD IDEAS<br><b>Est. 2026 · Makassar</b></p></div>
+      </div>
+      <div class="hero-art reveal" aria-label="Komposisi seni 3D Socialyze">
+        <canvas class="hero-3d-canvas" id="hero3DCanvas" aria-hidden="true"></canvas>
+        <div class="art-top"><span>CREATIVE DEPT.</span><span>NO. 026</span></div>
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="art-sticker">BUILD<br>YOUR<br><i>BRAND!</i></div>
+        <div class="art-sun">✳</div><div class="art-bottom"><span>BRAND<br>STUDIO</span><b>SC®</b><span>GOOD IDEAS<br>TRAVEL FAR.</span></div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-label="Layanan Socialyze"><div class="ticker-track">BRANDING ✳ SOCIAL MEDIA ✳ CONTENT CREATION ✳ CREATIVE STRATEGY ✳ BRANDING ✳ SOCIAL MEDIA ✳ CONTENT CREATION ✳ CREATIVE STRATEGY ✳</div></div>
+
+    <section class="section services-section" id="services">
+      <div class="section-heading reveal"><div><p class="eyebrow">WHAT WE DO ?</p><h2>Good ideas.<br><em>Great execution.</em></h2></div><p>Kami merancang pengalaman brand yang terasa relevan, konsisten, dan mudah diingat.</p></div>
+      <div class="service-grid">
+        <article class="service-card reveal"><span class="card-number">01 / BRAND</span><div class="service-icon">✳</div><h3>Branding &amp; Visual Identity</h3><p>Identitas visual, logo, dan sistem brand yang punya karakter kuat.</p><a href="#packages">Explore service ↗</a></article>
+        <article class="service-card service-card-lime reveal"><span class="card-number">02 / SOCIAL</span><div class="service-icon">◎</div><h3>Social Media Management</h3><p>Konten yang terarah untuk membangun interaksi dan kepercayaan audiens.</p><a href="#packages">Explore service ↗</a></article>
+        <article class="service-card reveal"><span class="card-number">03 / CONTENT</span><div class="service-icon">▧</div><h3>Content Creation</h3><p>Visual campaign, desain feed, dan materi promosi yang konsisten.</p><a href="#packages">Explore service ↗</a></article>
+        <article class="service-card service-card-lime reveal"><span class="card-number">04 / DESIGN</span><div class="service-icon">✎</div><h3>Desain Grafis</h3><p>Materi visual promosi yang menarik, konsisten, dan sesuai karakter brand.</p><a href="#packages">Explore service ↗</a></article>
+      </div>
+    </section>
+
+    <section class="section portfolio-section" id="portfolio">
+      <div class="section-heading reveal"><div><p class="eyebrow">LAYANAN KAMI</p><h2>Proof, not<br><em>promises.</em></h2></div><p>Beberapa contoh karya untuk menunjukkan arah visual yang bisa kami kembangkan bersama brand kamu.</p></div>
+      <div class="portfolio-filters" role="group" aria-label="Filter portofolio">
+        <button class="filter-button active" data-filter="all">Semua karya</button><button class="filter-button" data-filter="branding">Branding</button><button class="filter-button" data-filter="social">Social media</button><button class="filter-button" data-filter="content">Content</button>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <button class="portfolio-item portfolio-one reveal" data-category="branding" data-title="Bold Identity" data-description="Eksplorasi identitas visual dengan karakter tegas dan palet warna berani." data-image="{% static 'website/images/porto-1.jpg' %}">
+          <span class="portfolio-image"><img src="{% static 'website/images/porto-1.jpg' %}" alt="Contoh karya branding 1" onerror="this.parentElement.classList.add('placeholder');this.remove()"><span class="placeholder-label">STUDIO<br>01</span></span><span class="portfolio-meta"><span><b>Bold Identity</b><small>BRANDING / 2026</small></span><span class="round-arrow">↗</span></span>
+        </button>
+        <button class="portfolio-item portfolio-two reveal" data-category="social" data-title="Social Presence" data-description="Konsep konten media sosial dengan sistem desain yang konsisten." data-image="{% static 'website/images/porto-2.jpg' %}">
+          <span class="portfolio-image"><img src="{% static 'website/images/porto-2.jpg' %}" alt="Contoh karya social media 2" onerror="this.parentElement.classList.add('placeholder');this.remove()"><span class="placeholder-label">SOCIAL<br>02</span></span><span class="portfolio-meta"><span><b>Social Presence</b><small>SOCIAL MEDIA / 2026</small></span><span class="round-arrow">↗</span></span>
+        </button>
+        <button class="portfolio-item portfolio-three reveal" data-category="content" data-title="Campaign Play" data-description="Konsep visual campaign yang playful dan mudah dikenali." data-image="{% static 'website/images/porto-3.jpg' %}">
+          <span class="portfolio-image"><img src="{% static 'website/images/porto-3.jpg' %}" alt="Contoh karya content 3" onerror="this.parentElement.classList.add('placeholder');this.remove()"><span class="placeholder-label">CAMPAIGN<br>03</span></span><span class="portfolio-meta"><span><b>Campaign Play</b><small>CONTENT / 2026</small></span><span class="round-arrow">↗</span></span>
+        </button>
+      </div>
+      <p class="helper-note"></p>
+    </section>
+
+    <section class="package-section" id="packages">
+      <div class="section section-heading reveal"><div><p class="eyebrow"></p><h2>Your vision.<br><em>Our creative direction.</em></h2></div><p>Pilih paket yang sesuai kebutuhan. Detail pesanan akan ditampilkan sebelum kamu mengirim permintaan.</p></div>
+      <div class="section package-grid">
+        <article class="package-card reveal">
+          <div class="package-top"><span>STARTER BRANDING</span><span class="package-symbol">✳</span></div>
+          <h3>Paket Starter Branding</h3>
+          <p>Bangun identitas visual bisnis yang profesional, konsisten, dan mudah dikenali.</p>
+          <div class="price">Rp700.000<span>/ project</span></div>
+          <div class="package-feature-heading">LAYANAN UTAMA YANG DIDAPAT</div>
+          <ul>
+            <li>1 desain logo utama</li>
+            <li>2 alternatif konsep logo</li>
+            <li>Palet warna dan rekomendasi tipografi</li>
+            <li>Mini brand guide</li>
+          </ul>
+          <details class="package-details">
+            <summary>Lihat Rincian Fitur <span aria-hidden="true">＋</span></summary>
+            <div class="package-details-content">
+              <strong>DETAIL PAKET &amp; REVISI</strong>
+              <ul>
+                <li>Desain kartu nama atau business card</li>
+                <li>Panduan penggunaan logo sederhana</li>
+                <li>File final format PNG, JPG, dan PDF</li>
+                <li>3 kali revisi desain</li>
+                <li>Konsultasi konsep branding</li>
+                <li>Estimasi pengerjaan 5–7 hari kerja</li>
+              </ul>
+            </div>
+          </details>
+          <button class="button button-dark add-package" data-package="Paket Starter Branding" data-price="700000">Pilih Paket <span>↗</span></button>
+        </article>
+
+        <article class="package-card package-featured reveal">
+          <div class="popular-tag">MOST POPULAR ✳</div>
+          <div class="package-top"><span>SILVER SOCIAL MEDIA</span><span class="package-symbol">◎</span></div>
+          <h3>Paket Silver Sosial Media</h3>
+          <p>Kelola media sosial dengan konten kreatif dan perencanaan yang konsisten.</p>
+          <div class="price">Rp1.600.000<span>/ bulan</span></div>
+          <div class="package-feature-heading">LAYANAN UTAMA YANG DIDAPAT</div>
+          <ul>
+            <li>12 desain konten feed Instagram</li>
+            <li>4 video pendek Reels atau TikTok</li>
+            <li>Caption dan copywriting konten</li>
+            <li>Kalender konten bulanan</li>
+          </ul>
+          <details class="package-details">
+            <summary>Lihat Rincian Fitur <span aria-hidden="true">＋</span></summary>
+            <div class="package-details-content">
+              <strong>DETAIL PAKET &amp; REVISI</strong>
+              <ul>
+                <li>Riset ide dan tema konten</li>
+                <li>Rekomendasi hashtag yang relevan</li>
+                <li>Desain mengikuti identitas visual brand</li>
+                <li>3 kali revisi desain/konten</li>
+                <li>Rekomendasi waktu publikasi</li>
+                <li>Laporan performa konten sederhana setiap bulan</li>
+              </ul>
+            </div>
+          </details>
+          <button class="button button-lime add-package" data-package="Paket Silver Sosial Media" data-price="1600000">Pilih Paket <span>↗</span></button>
+        </article>
+
+        <article class="package-card reveal">
+          <div class="package-top"><span>GOLD DIGITAL STRATEGY</span><span class="package-symbol">✺</span></div>
+          <h3>Paket Gold Digital Strategy</h3>
+          <p>Strategi pemasaran digital terpadu untuk memperkuat brand dan menjangkau audiens.</p>
+          <div class="price">Rp2.500.000<span>/ bulan</span></div>
+          <div class="package-feature-heading">LAYANAN UTAMA YANG DIDAPAT</div>
+          <ul>
+            <li>20 desain konten media sosial</li>
+            <li>8 video pendek Reels atau TikTok</li>
+            <li>Strategi dan kalender konten bulanan</li>
+            <li>Perencanaan kampanye digital dan Ads</li>
+          </ul>
+          <details class="package-details">
+            <summary>Lihat Rincian Fitur <span aria-hidden="true">＋</span></summary>
+            <div class="package-details-content">
+              <strong>DETAIL PAKET &amp; PENGELOLAAN</strong>
+              <ul>
+                <li>Analisis target audiens dan karakter brand</li>
+                <li>Copywriting dan caption konten</li>
+                <li>Pengaturan dan monitoring kampanye iklan</li>
+                <li>3 kali revisi desain/konten</li>
+                <li>Evaluasi performa konten dan kampanye</li>
+                <li>Laporan pemasaran bulanan dan rekomendasi optimasi</li>
+              </ul>
+              <small class="package-note">Biaya anggaran iklan (ad spend) tidak termasuk harga paket.</small>
+            </div>
+          </details>
+          <button class="button button-dark add-package" data-package="Paket Gold Digital Strategy" data-price="2500000">Pilih Paket <span>↗</span></button>
+        </article>
+      </div>
+      <div class="section cart-strip">
+        <div class="cart-strip-info"><span class="cart-icon">🛒</span><div><b>Project bag <span id="cartCount">0</span></b><small id="cartText">Belum ada paket dipilih</small><strong class="cart-total-inline" id="cartTotal">Rp0</strong></div></div>
+        <div class="cart-strip-actions"><button class="button button-outline-light" id="clearCart" type="button">Hapus Semua</button><button class="button button-lime" id="openCheckout" type="button">Checkout ↗</button></div>
+        <div class="cart-items" id="cartItems" aria-live="polite"></div>
+      </div>
+    </section>
+
+
+    <section class="section faq-section" id="faq">
+      <div class="section-heading reveal"><div><p class="eyebrow"></p><h2>Frequently asked<br><em>questions.</em></h2></div><p>Masih ada yang ingin ditanyakan? Temukan jawaban singkat seputar layanan dan pemesanan Socialyze.</p></div>
+      <div class="faq-list reveal">
+        <details class="faq-item"><summary><span>01</span> Apa itu branding?<b aria-hidden="true">＋</b></summary><div class="faq-answer"><p>Branding adalah cara membuat usaha kamu punya identitas yang jelas, biar orang mudah ingat dan percaya..</p></div></details>
+        <details class="faq-item"><summary><span>02</span> Kenapa branding penting untuk UMKM?<b aria-hidden="true">＋</b></summary><div class="faq-answer"><p>Supaya usaha kamu terlihat lebih profesional, beda dari pesaing, dan lebih gampang menarik pelanggan.</p></div></details>
+        <details class="faq-item"><summary><span>03</span> Apa yang kalian bantu?<b aria-hidden="true">＋</b></summary><div class="faq-answer"><p>Kami bantu bikin strategi, desain visual (logo, warna, tampilan), dan konten yang sesuai dengan tujuan usaha kamu..</p></div></details>
+        <details class="faq-item"><summary><span>04</span> Apakah harus punya modal besar?
+          <b aria-hidden="true">＋</b></summary><div class="faq-answer"><p>Tidak. Layanan kami bisa disesuaikan dengan kebutuhan dan kemampuan UMKM, mulai dari yang kecil sampai berkembang.</p></div></details>
+        <details class="faq-item"><summary><span>05</span>Bagaimana cara mulai kerja sama?   <b aria-hidden="true">＋</b></summary><div class="faq-answer"><p>Kamu cukup cerita tentang usaha dan tujuanmu, lalu kami susun solusi kreatif yang pas untukmu.</p></div></details>
+        <details class="faq-item"><summary><span>06</span> Berapa lama prosesnya?  <b aria-hidden="true">＋</b></summary><div class="faq-answer"><p>Biasanya butuh beberapa minggu, tergantung paket dan kebutuhan usaha kamu.</p></div></details>
+      </div>
+    </section>
+
+    <section class="section about-section" id="about"><div class="about-mark reveal">S<span>✳</span>C</div><div class="about-copy reveal"><p class="eyebrow">A LITTLE ABOUT US</p><h2>Creative minds.<br><em>Real connection.</em></h2><p>Socialyze adalah creative agency untuk UMKM yang ingin tampil lebih percaya diri. Kami percaya desain yang baik bukan hanya terlihat menarik, tetapi juga membantu brand berkomunikasi dengan orang yang tepat.</p><a class="text-link" href="#contact">Let’s make something ↗</a></div></section>
+
+    <section class="contact-section" id="contact"><div class="section contact-inner reveal"><div><p class="eyebrow">HAVE A PROJECT IN MIND?</p><h2>Let's make<br><em>noise together.</em></h2></div><div><p>Ceritakan ide kamu. Kita mulai dari obrolan sederhana.</p><button class="button button-lime" id="openConsultation" type="button">Mulai Konsultasi ↗</button><small>Isi formulir konsultasi langsung di website Socialyze.</small></div></div></section>
+
+    <section class="section latest-articles-section" id="latest-articles" aria-labelledby="latestArticlesTitle">
+      <div class="articles-topline">
+        <div>
+          <p class="eyebrow">INSIGHT &amp; INSPIRATION</p>
+          <h2 id="latestArticlesTitle">Wawasan untuk brand yang ingin bertumbuh<em></em></h2>
+        </div>
+        <a class="articles-view-all" href="#latest-articles"></a>
+      </div>
+
+      
+{% if articles %}
+    <div class="articles-grid">
+      {% for article in articles %}
+        <article class="article-card">
+
+          <a class="article-image"
+             href="{{ article.source_url|default:'#latest-articles' }}"
+             aria-label="Baca {{ article.title }}"
+             {% if article.source_url %}target="_blank" rel="noopener noreferrer"{% endif %}>
+
+            {% if article.image %}
+              <img
+                src="{{ article.image }}"
+                alt="{{ article.title }}"
+                loading="lazy">
+            {% else %}
+              <span class="article-image-placeholder">
+                SOCIALYZE ✳
+              </span>
+            {% endif %}
+
+          </a>
+
+          <div class="article-card-content">
+
+            <div class="article-meta">
+              {% if article.category %}
+                <span>{{ article.category.name }}</span>
+              {% else %}
+                <span>INSIGHT</span>
+              {% endif %}
+
+              <time datetime="{{ article.created_at|date:'Y-m-d' }}">
+                {{ article.created_at|date:"d M Y" }}
+              </time>
+            </div>
+
+            <h3>{{ article.title }}</h3>
+
+            <p>
+              {{ article.excerpt|default:article.body|truncatechars:145 }}
+            </p>
+
+            {% if article.source_url %}
+              <a class="article-read-link"
+                 href="{{ article.source_url }}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                Baca artikel 
+              </a>
+            {% else %}
+              <a class="article-read-link" href="#latest-articles">
+                Baca selengkapnya ↗
+              </a>
+            {% endif %}
+
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+{% else %}
+    <div class="articles-empty">
+      <span aria-hidden="true">✳</span>
+      <h3>Artikel terbaru sedang disiapkan.</h3>
+      <p>Silakan kembali lagi untuk membaca insight terbaru dari Socialyze.</p>
+    </div>
+{% endif %}
+
+
+  </main>
+
+  <footer class="socialyze-footer" id="footer">
+    <div class="footer-panel">
+      <div class="footer-upper">
+        <div class="footer-identity">
+          <a class="footer-brand" href="#home" aria-label="Socialyze beranda"><img src="{% static 'website/images/logo.png' %}" alt="SOCIALYZE Creative Agency"></a>
+          <p>Digital agency untuk membantu brand tumbuh melalui strategi dan kreativitas.</p>
+          <div class="footer-socials" aria-label="Media sosial"><a href="#contact" aria-label="Instagram">◎</a><a href="#contact" aria-label="LinkedIn">in</a><a href="#contact" aria-label="TikTok">♪</a></div>
+        </div>
+        <div class="footer-column"><h3>Solutions</h3><a href="#services">Content Creation</a><a href="#services">Social Media Management</a><a href="#services">Digital Marketing</a><a href="#services">Branding &amp; Visual Design</a><a href="#packages">Paket Layanan</a></div>
+       <div class="footer-column">
+    <h3>Company</h3>
+    <a href="#about">Tentang Kami</a>
+    <a href="#portfolio">Portofolio</a>
+    <a href="#about">Cara Kerja</a>
+    <a href="/#latest-articles">Artikel</a>
+    <a href="#contact">Mulai Kolaborasi</a>
+</div>
+        <div class="footer-column"><h3>Support</h3><a href="#faq">FAQ</a><a href="#contact">Kontak</a><button type="button" id="footerConsultation">Konsultasi</button></div>
+      </div>
+      <div class="footer-wordmark" aria-hidden="true">Socialyze Creative</div>
+    </div>
+    <div class="footer-bottom"><p>© <span id="year"></span> Socialyze Creative. All rights reserved.</p><div><a href="#footer">Privacy Policy</a><a href="#footer">Cookie Policy</a></div></div>
+  </footer>
+
+  <div class="modal-backdrop" id="portfolioModal" aria-hidden="true"><div class="modal portfolio-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" data-close="portfolioModal" aria-label="Tutup">×</button><div class="modal-art" id="modalArt"><img id="modalImage" src="" alt=""></div><div class="modal-content"><p class="eyebrow">SELECTED PROJECT</p><h2 id="modalTitle">Project title</h2><p id="modalDescription"></p><button class="button button-dark" data-close="portfolioModal">Tutup detail</button></div></div></div>
+
+  <div class="modal-backdrop" id="checkoutModal" aria-hidden="true"><div class="modal checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle"><button class="modal-close" data-close="checkoutModal" aria-label="Tutup">×</button><div class="checkout-head"><p class="eyebrow">LET'S START A PROJECT</p><h2 id="checkoutTitle">Pesan <em>layanan.</em></h2><p>Isi detail berikut untuk mengirim permintaan pesanan ke tim Socialyze. Pembayaran belum diproses otomatis.</p></div><form id="checkoutForm"><div class="checkout-layout"><div class="form-fields">
+    <label>Nama lengkap<input name="name" required minlength="2" autocomplete="name" placeholder="Nama kamu"></label>
+    <label>Email aktif<input name="email" type="email" required autocomplete="email" placeholder="nama@email.com"></label>
+    <label>Nomor WhatsApp<input name="phone" type="tel" required autocomplete="tel" placeholder="08xxxxxxxxxx"></label>
+    <label>Catatan proyek<textarea name="notes" rows="3" placeholder="Ceritakan kebutuhan brand kamu (opsional)"></textarea></label>
+    <fieldset><legend>Pilih metode pembayaran (demo)</legend><label class="payment-option"><input type="radio" name="payment" value="QRIS (demo)" required><span><b>QRIS</b><small>Simulasi pembayaran QR</small></span><span class="payment-tag">DEMO</span></label><label class="payment-option"><input type="radio" name="payment" value="Virtual Account (demo)"><span><b>Virtual Account</b><small>Simulasi nomor VA</small></span><span class="payment-tag">DEMO</span></label><label class="payment-option"><input type="radio" name="payment" value="Transfer bank manual (demo)"><span><b>Transfer bank manual</b><small>Instruksi contoh, belum diverifikasi</small></span><span class="payment-tag">DEMO</span></label></fieldset>
+    </div><aside class="order-summary"><p class="eyebrow">ORDER SUMMARY</p><div id="summaryItems" class="summary-items"><p>Belum ada paket.</p></div><div class="summary-total"><span>Total estimasi</span><strong id="summaryTotal">Rp0</strong></div><p class="summary-disclaimer">Harga adalah estimasi. Tim Socialyze perlu mengonfirmasi kebutuhan dan ketersediaan sebelum proyek dimulai.</p><button class="button button-lime full-width" type="submit">PESAN ↗</button><button class="button button-cancel full-width" id="cancelCheckout" type="button">Batal checkout</button></aside></div></form></div></div>
+
+
+  <div class="modal-backdrop" id="consultationModal" aria-hidden="true"><div class="modal checkout-modal" role="dialog" aria-modal="true" aria-labelledby="consultationTitle"><button class="modal-close" data-close="consultationModal" aria-label="Tutup">×</button><div class="checkout-head"><p class="eyebrow">LET'S TALK ABOUT YOUR BRAND</p><h2 id="consultationTitle">Ruang <em>konsultasi.</em></h2><p>Ceritakan kebutuhan kamu. Permintaan konsultasi akan dikirim ke tim Socialyze.</p></div><form id="consultationForm"><div class="consultation-form-grid"><label>Nama lengkap<input name="name" required minlength="2" autocomplete="name" placeholder="Nama kamu"></label><label>Email aktif<input name="email" type="email" required autocomplete="email" placeholder="nama@email.com"></label><label>Jenis layanan<select name="service" required><option value="">Pilih layanan</option><option>Branding &amp; Visual Identity</option><option>Social Media Management</option><option>Content Creation</option><option>Campaign Kit</option><option>Lainnya / belum yakin</option></select></label><label>Estimasi anggaran<select name="budget" required><option value="">Pilih estimasi</option><option>Di bawah Rp750.000</option><option>Rp750.000–Rp1.500.000</option><option>Rp1.500.000–Rp2.500.000</option><option>Di atas Rp2.500.000</option><option>Perlu diskusi</option></select></label><label class="consultation-wide">Ceritakan kebutuhan proyek<textarea name="brief" rows="4" required minlength="10" placeholder="Contoh: Saya membutuhkan desain konten Instagram untuk brand makanan..."></textarea></label></div><p class="summary-disclaimer">Data konsultasi akan disimpan secara aman di database website.</p><button class="button button-lime full-width" type="submit">Kirim permintaan konsultasi ↗</button></form></div></div>
+
+  <div class="modal-backdrop" id="successModal" aria-hidden="true"><div class="modal success-modal" role="dialog" aria-modal="true" aria-labelledby="successTitle"><button class="modal-close" data-close="successModal" aria-label="Tutup">×</button><div class="success-mark">✓</div><p class="eyebrow">REQUEST RECEIVED / DEMO</p><h2 id="successTitle">Thanks for reaching out!</h2><p id="successMessage">Permintaan kamu tercatat di browser ini.</p><div class="reference-box"><small>REFERENCE ID</small><strong id="referenceId">SOC-000000</strong></div><p class="demo-warning">Ini bukan bukti pembayaran. Pembayaran belum diproses otomatis; tim Socialyze akan menghubungi kamu untuk konfirmasi.</p><button class="button button-dark full-width" data-close="successModal">Selesai</button></div></div>
+
+  <script src="{% static 'website/script.js' %}"></script>
+  <script type="module" src="{% static 'website/3d-scene.js' %}"></script>
+</body>
+</html>

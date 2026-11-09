@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title|default:'Akun Socialyze' }}</title>
+  <link rel="stylesheet" href="{% static 'website/style.css' %}">
+</head>
+<body class="auth-page">
+  <main class="auth-wrap">
+    <section class="auth-card">
+      <div class="auth-nav">
+        <a href="{% url 'home' %}">← Socialyze</a>
+        {% if request.user.is_authenticated %}
+          <form method="post" action="{% url 'staff_logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="auth-link">Logout</button>
+          </form>
+        {% endif %}
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="auth-msg">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+</body>
+</html>

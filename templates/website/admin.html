@@ -1,0 +1,565 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Socialyze</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'website/style.css' %}">
+</head>
+
+<body class="admin-page">
+
+<div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+
+        <a class="admin-brand" href="{% url 'dashboard' %}">
+            <img src="{% static 'website/images/logo.png' %}" alt="Socialyze">
+            <span>
+                <strong>SOCIALYZE</strong>
+                <small>CREATIVE ADMIN</small>
+            </span>
+        </a>
+
+        <div class="admin-side-label">OVERVIEW</div>
+
+        <nav class="admin-nav" aria-label="Navigasi admin">
+
+            <a class="admin-nav-link active" href="{% url 'dashboard' %}">
+                <span class="admin-nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="admin-nav-link" href="#statistics">
+                <span class="admin-nav-icon">▤</span>
+                <span>Ringkasan Statistik</span>
+            </a>
+
+            <div class="admin-side-label">CUSTOMER MANAGEMENT</div>
+
+            <a class="admin-nav-link" href="#orders">
+                <span class="admin-nav-icon">▣</span>
+                <span>Data Pesanan</span>
+                <span class="admin-nav-count">{{ total_orders }}</span>
+            </a>
+
+            <a class="admin-nav-link" href="#consultations">
+                <span class="admin-nav-icon">✳</span>
+                <span>Konsultasi</span>
+                <span class="admin-nav-count">{{ total_consultations }}</span>
+            </a>
+
+            <a class="admin-nav-link" href="{% url 'admin_articles' %}">
+                <span class="admin-nav-icon">▤</span>
+                <span>Artikel</span>
+            </a>
+
+            <div class="admin-side-label">ACCOUNT</div>
+
+            <a class="admin-nav-link" href="{% url 'admin_profile' %}">
+                <span class="admin-nav-icon">◉</span>
+                <span>Pengaturan Akun</span>
+            </a>
+
+            <a class="admin-nav-link" href="{% url 'home' %}" target="_blank" rel="noopener">
+                <span class="admin-nav-icon">↗</span>
+                <span>Lihat Website</span>
+            </a>
+
+        </nav>
+
+        <div class="admin-sidebar-bottom">
+
+            <div class="admin-user-chip">
+                <span class="admin-avatar">{{ request.user.username|slice:":1"|upper }}</span>
+                <span>
+                    <b>{{ request.user.username }}</b>
+                    <small>Administrator</small>
+                </span>
+            </div>
+
+            <form method="post" action="{% url 'staff_logout' %}">
+                {% csrf_token %}
+                <button class="admin-logout" type="submit">
+                    <span>↪</span> Logout
+                </button>
+            </form>
+
+        </div>
+    </aside>
+
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <button class="admin-mobile-toggle"
+                    id="adminMenuToggle"
+                    type="button"
+                    aria-label="Buka menu"
+                    aria-expanded="false">
+                ☰
+            </button>
+
+            <div class="admin-breadcrumb">
+                SOCIALYZE <span>/</span> ADMIN <span>/</span> DASHBOARD
+            </div>
+
+            <a class="admin-view-site"
+               href="{% url 'home' %}"
+               target="_blank"
+               rel="noopener">
+                Lihat website ↗
+            </a>
+
+        </header>
+
+
+        <div class="admin-content-wrap">
+
+            {% if messages %}
+            <div class="admin-alerts">
+                {% for message in messages %}
+                <div class="admin-alert {{ message.tags|default:'info' }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+
+            <section class="admin-welcome">
+
+                <div>
+                    <p class="admin-eyebrow">SOCIALYZE / OPERATIONS CENTER</p>
+                    <h1>Dashboard <em>overview.</em></h1>
+                    <p class="admin-subtitle">
+                        Pantau pesanan dan permintaan konsultasi yang masuk ke Socialyze.
+                    </p>
+                </div>
+
+                <div class="admin-date">
+                    <span>ADMIN SESSION</span>
+                    <strong>{{ request.user.username }}</strong>
+                </div>
+
+            </section>
+
+
+            <section class="admin-stat-grid" id="statistics" aria-label="Ringkasan statistik">
+
+                <article class="admin-stat-card stat-dark">
+                    <div class="admin-stat-top">
+                        <span>TOTAL PESANAN</span>
+                        <span class="stat-symbol">↗</span>
+                    </div>
+                    <strong>{{ total_orders }}</strong>
+                    <small>Seluruh pesanan masuk</small>
+                </article>
+
+                <article class="admin-stat-card">
+                    <div class="admin-stat-top">
+                        <span>TOTAL PENDAPATAN</span>
+                        <span class="stat-symbol">Rp</span>
+                    </div>
+                    <strong class="stat-currency">Rp{{ revenue_display }}</strong>
+                    <small>Akumulasi nilai pesanan</small>
+                </article>
+
+                <article class="admin-stat-card stat-lime">
+                    <div class="admin-stat-top">
+                        <span>PESANAN MENUNGGU</span>
+                        <span class="stat-symbol">◷</span>
+                    </div>
+                    <strong>{{ pending_orders }}</strong>
+                    <small>Perlu konfirmasi admin</small>
+                </article>
+
+                <article class="admin-stat-card">
+                    <div class="admin-stat-top">
+                        <span>TOTAL KONSULTASI</span>
+                        <span class="stat-symbol">✳</span>
+                    </div>
+                    <strong>{{ total_consultations }}</strong>
+                    <small>{{ pending_consultations }} menunggu ditinjau</small>
+                </article>
+
+            </section>
+
+
+            <section class="admin-panel" id="orders">
+
+                <div class="admin-panel-heading">
+
+                    <div>
+                        <p class="admin-eyebrow">CUSTOMER MANAGEMENT</p>
+                        <h2>Data pesanan</h2>
+                        <p>Kelola pesanan yang dikirim melalui website.</p>
+                    </div>
+
+                    <button id="exportOrders" class="admin-primary-button" type="button">
+                        Ekspor CSV <span>↗</span>
+                    </button>
+
+                </div>
+
+
+                <div class="admin-table-tools">
+
+                    <label class="admin-search">
+                        <span>⌕</span>
+                        <input id="orderSearch"
+                               type="search"
+                               placeholder="Cari nama, email, atau ID pesanan...">
+                    </label>
+
+                    <span class="admin-result-count">
+                        {{ total_orders }} PESANAN
+                    </span>
+
+                </div>
+
+
+                <div class="admin-order-list" id="ordersList">
+
+                    {% for order in orders %}
+
+                    <article class="admin-order-card searchable-order"
+     data-reference="{{ order.reference|escape }}"
+    data-date="{{ order.created_at|date:'d M Y H:i' }}"
+    data-name="{{ order.name|escape }}"
+    data-email="{{ order.email|escape }}"
+    data-phone="{{ order.phone|escape }}"
+    data-total="{{ order.total }}"
+    data-payment="{{ order.payment_method|escape }}"
+    data-status="{{ order.status|escape }}"
+    data-notes="{{ order.notes|default:''|escape }}"
+    data-search="{{ order.reference|lower }} {{ order.name|lower }} {{ order.email|lower }} {{ order.phone|lower }}">
+                        <div class="admin-order-main">
+
+                            <div>
+                                <span class="admin-order-ref">{{ order.reference }}</span>
+                                <h3>{{ order.name }}</h3>
+                                <p>
+                                    {{ order.email }}
+                                    <span>·</span>
+                                    {{ order.phone }}
+                                </p>
+                            </div>
+
+                            <div class="admin-order-amount">
+                                Rp{{ order.total_display }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="admin-order-meta">
+                            <span>{{ order.created_at|date:'d M Y, H:i' }}</span>
+                            <span>{{ order.payment_method }}</span>
+
+                            <span>
+                                {% for item in order.items %}
+                                    {{ item.name }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    Tidak ada rincian paket
+                                {% endfor %}
+                            </span>
+                        </div>
+
+
+                        {% if order.notes %}
+                        <p class="admin-order-note">
+                            <b>Catatan:</b> {{ order.notes }}
+                        </p>
+                        {% endif %}
+
+
+                        <div class="admin-order-actions">
+
+                            <form method="post"
+                                  action="{% url 'update_order_status' order.id %}"
+                                  class="admin-status-form">
+
+                                {% csrf_token %}
+
+                                <label for="status-{{ order.id }}">
+                                    Status pesanan
+                                </label>
+
+                                <select id="status-{{ order.id }}"
+                                        name="status"
+                                        class="admin-status-select">
+
+                                    {% for value,label in order.STATUS_CHOICES %}
+                                    <option value="{{ value }}"
+                                        {% if order.status == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                    {% endfor %}
+
+                                </select>
+
+                                <button type="submit" class="admin-small-button">
+                                    Simpan status
+                                </button>
+
+                            </form>
+
+
+                            <form method="post"
+                                  action="{% url 'delete_order' order.id %}"
+                                  onsubmit="return confirm('Yakin ingin menghapus pesanan {{ order.reference }}?')">
+
+                                {% csrf_token %}
+
+                                <button type="submit" class="admin-delete-button">
+                                    Hapus
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </article>
+
+                    {% empty %}
+
+                    <div class="admin-empty">
+                        <span>✳</span>
+                        <h3>Belum ada pesanan</h3>
+                        <p>Pesanan dari formulir website akan muncul di bagian ini.</p>
+                        <a href="{% url 'home' %}#packages">Lihat halaman paket ↗</a>
+                    </div>
+
+                    {% endfor %}
+
+
+                    <div class="admin-empty" id="orderNoResults" hidden>
+                        <h3>Pesanan tidak ditemukan</h3>
+                        <p>Coba gunakan kata kunci yang berbeda.</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="admin-panel" id="consultations">
+
+                <div class="admin-panel-heading">
+
+                    <div>
+                        <p class="admin-eyebrow">CUSTOMER RELATIONSHIP</p>
+                        <h2>Permintaan konsultasi</h2>
+                        <p>Brief dan kebutuhan calon klien yang masuk.</p>
+                    </div>
+
+                    <span class="admin-section-total">
+                        {{ total_consultations }} INQUIRIES
+                    </span>
+
+                </div>
+
+
+                <div class="admin-consultation-list">
+
+                    {% for item in consultations %}
+
+                    <article class="admin-consult-card">
+
+                        <div class="admin-consult-head">
+
+                            <div>
+                                <span class="admin-order-ref">
+                                    {{ item.reference }} · {{ item.created_at|date:'d M Y' }}
+                                </span>
+
+                                <h3>{{ item.name }}</h3>
+                                <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+                            </div>
+
+                            <span class="admin-consult-status">
+                                {{ item.status }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="admin-consult-meta">
+
+                            <span>
+                                <b>Layanan</b>
+                                {{ item.service }}
+                            </span>
+
+                            <span>
+                                <b>Anggaran</b>
+                                {{ item.budget }}
+                            </span>
+
+                        </div>
+
+                        <p>{{ item.brief }}</p>
+
+                    </article>
+
+                    {% empty %}
+
+                    <div class="admin-empty">
+                        <span>✳</span>
+                        <h3>Belum ada konsultasi</h3>
+                        <p>Permintaan konsultasi dari website akan tampil di sini.</p>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+
+            <footer class="admin-footer">
+                <span>© {% now "Y" %} SOCIALYZE CREATIVE AGENCY</span>
+                <span>BUILT FOR BETTER BRAND EXPERIENCES ✳</span>
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div class="admin-sidebar-scrim" id="adminSidebarScrim"></div>
+
+
+<script>
+(() => {
+
+    const search = document.getElementById('orderSearch');
+    const cards = [...document.querySelectorAll('.searchable-order')];
+    const noResults = document.getElementById('orderNoResults');
+
+    if (search) {
+        search.addEventListener('input', () => {
+
+            const query = search.value.trim().toLowerCase();
+            let visible = 0;
+
+            cards.forEach(card => {
+                const match = card.dataset.search.includes(query);
+                card.hidden = !match;
+
+                if (match) visible++;
+            });
+
+            if (noResults) {
+                noResults.hidden = visible !== 0;
+            }
+
+        });
+    }
+
+
+    const exportButton = document.getElementById('exportOrders');
+
+    if (exportButton) {
+        exportButton.addEventListener('click', () => {
+
+            
+const rows = [
+    ['ID', 'Tanggal', 'Nama', 'Email', 'WhatsApp', 'Total', 'Pembayaran', 'Status', 'Catatan']
+];
+
+document.querySelectorAll('.searchable-order').forEach(card => {
+    rows.push([
+        card.dataset.reference || '',
+        card.dataset.date || '',
+        card.dataset.name || '',
+        card.dataset.email || '',
+        card.dataset.phone || '',
+        card.dataset.total || '',
+        card.dataset.payment || '',
+        card.dataset.status || '',
+        card.dataset.notes || ''
+    ]);
+});
+
+if (rows.length === 1) {
+    alert('Belum ada pesanan untuk diekspor.');
+    return;
+}
+
+const quote = value =>
+    '"' + String(value ?? '').replace(/"/g, '""') + '"';
+
+const csv = '\uFEFF' + rows.map(row =>
+    row.map(quote).join(',')
+).join('\r\n');
+
+const blobUrl = URL.createObjectURL(
+    new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+);
+
+const link = document.createElement('a');
+link.href = blobUrl;
+link.download = 'socialyze-orders.csv';
+link.click();
+
+URL.revokeObjectURL(blobUrl);
+
+
+        });
+    }
+
+
+    const sidebar = document.getElementById('adminSidebar');
+    const toggle = document.getElementById('adminMenuToggle');
+    const scrim = document.getElementById('adminSidebarScrim');
+
+    const closeMenu = () => {
+        if (sidebar) sidebar.classList.remove('is-open');
+        if (scrim) scrim.classList.remove('is-visible');
+
+        if (toggle) {
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    };
+
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+
+            const open = sidebar.classList.toggle('is-open');
+
+            if (scrim) {
+                scrim.classList.toggle('is-visible', open);
+            }
+
+            toggle.setAttribute('aria-expanded', String(open));
+
+        });
+    }
+
+    if (scrim) {
+        scrim.addEventListener('click', closeMenu);
+    }
+
+    if (sidebar) {
+        sidebar.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+    }
+
+})();
+</script>
+
+</body>
+</html>

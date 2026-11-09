@@ -1,0 +1,46 @@
+
+{% extends 'website/auth_base.html' %}
+
+{% block content %}
+
+<p class="eyebrow">JOIN SOCIALYZE</p>
+
+<h1>Buat Akun</h1>
+
+<p>Daftar untuk mulai menggunakan layanan Socialyze.</p>
+
+{% if form.non_field_errors %}
+    <div class="field-errors">
+        {{ form.non_field_errors }}
+    </div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+        </label>
+
+        {{ field }}
+
+        {% if field.help_text %}
+            <small class="helptext">{{ field.help_text|safe }}</small>
+        {% endif %}
+
+        {% for error in field.errors %}
+            <div class="field-errors">{{ error }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="auth-actions">
+        <button type="submit">Daftar</button>
+
+        <a href="{% url 'user_login' %}">
+            Sudah punya akun? Login
+        </a>
+    </div>
+</form>
+
+{% endblock %}

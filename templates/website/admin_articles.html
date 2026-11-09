@@ -1,0 +1,311 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Artikel — Socialyze</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 35px;
+            font-family: 'Space Grotesk', sans-serif;
+            background: #f7f0d2;
+            color: #430709;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        h1 { margin: 0 0 8px; font-size: 32px; }
+        h2 { margin-top: 0; font-size: 22px; }
+
+        .muted {
+            color: #806b62;
+            margin: 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #6b0b0d;
+            color: white;
+            text-decoration: none;
+            border: 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .button:hover { background: #430709; }
+
+        .panel {
+            background: #fff8ca;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e4d8a9;
+            margin-bottom: 25px;
+        }
+
+        .count {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d8cba0;
+            border-radius: 6px;
+            background: #fffdf0;
+            color: #430709;
+            font: inherit;
+            outline: none;
+        }
+
+        input:focus { border-color: #6b0b0d; }
+
+        .help {
+            font-size: 13px;
+            color: #806b62;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message {
+            padding: 13px 16px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            background: #e8efd8;
+            color: #31502b;
+        }
+
+        .message.error {
+            background: #f8dddd;
+            color: #8a1717;
+        }
+
+        .table-wrap { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 10px;
+            border-bottom: 1px solid #e4d8a9;
+            font-size: 14px;
+        }
+
+        th {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e9dfbd;
+            font-size: 12px;
+        }
+
+        .source-link {
+            color: #6b0b0d;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .source-link:hover { text-decoration: underline; }
+
+        .delete-button {
+            padding: 8px 12px;
+            border: 0;
+            border-radius: 5px;
+            background: #8a1717;
+            color: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .delete-button:hover { background: #430709; }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #806b62;
+        }
+
+        @media(max-width: 650px) {
+            body { padding: 18px; }
+            h1 { font-size: 25px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="topbar">
+        <div>
+            <h1>Kelola Artikel</h1>
+            <p class="muted">
+                Tambahkan artikel dari sumber eksternal ke website Socialyze.
+            </p>
+        </div>
+
+        <a href="{% url 'dashboard' %}" class="button">
+            ← Kembali ke Dashboard
+        </a>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags == 'error' %}error{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="panel">
+        <h2>Tambah Artikel Baru</h2>
+        <p class="muted">
+            Tempelkan link artikel. Sistem akan mencoba mengambil informasi artikelnya secara otomatis.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="field" style="margin-top: 22px;">
+                <label for="source_url">Link Artikel *</label>
+                <input
+                    type="url"
+                    id="source_url"
+                    name="source_url"
+                    placeholder="https://contoh.com/artikel"
+                    maxlength="1000"
+                    required
+                >
+                <span class="help">
+                    Masukkan URL halaman artikel yang ingin ditampilkan.
+                    Judul, gambar, dan deskripsi akan diambil dari metadata halaman jika tersedia.
+                </span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="button">
+                    + Ambil dan Simpan Artikel
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <div class="count">
+            Total Artikel: {{ total_articles }}
+        </div>
+
+        <h2>Daftar Artikel</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>JUDUL ARTIKEL</th>
+                        <th>SUMBER</th>
+                        <th>STATUS</th>
+                        <th>TANGGAL</th>
+                        <th>AKSI</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for article in articles %}
+                    <tr>
+                        <td>{{ article.title }}</td>
+
+                        <td>
+                            {% if article.source_url %}
+                                <a href="{{ article.source_url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="source-link">
+                                    Lihat sumber ↗
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <span class="status">{{ article.status }}</span>
+                        </td>
+
+                        <td>{{ article.created_at|date:"d M Y" }}</td>
+
+                        <td>
+                            <form method="POST"
+                                  action="{% url 'admin_article_delete' article.id %}"
+                                  onsubmit="return confirm('Yakin ingin menghapus artikel ini?');">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-button">
+                                    Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty">
+                            Belum ada artikel. Silakan tambahkan artikel pertama.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>
